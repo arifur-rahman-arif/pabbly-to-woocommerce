@@ -1,0 +1,15 @@
+{
+    "name": "ar.arif/pabbly-to-woocommerce",
+    "authors": [
+        {
+            "name": "Arifur Rahman Arif",
+            "email": "dragonwarrior052@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PTW\\includes\\": "includes/"
+        }
+    },
+    "require": {}
+}
