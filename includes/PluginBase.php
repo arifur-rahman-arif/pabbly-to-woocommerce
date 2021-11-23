@@ -1,6 +1,7 @@
 <?php
 
 namespace PTW\includes;
+use PHPHtmlParser\Dom;
 
 class PluginBase {
 
@@ -12,6 +13,7 @@ class PluginBase {
     public function __construct() {
         $this->initializeClasses();
         $this->initializeHooks();
+        $this->parseHTML();
     }
 
     public function initializeClasses() {
@@ -19,6 +21,16 @@ class PluginBase {
     }
 
     public function initializeHooks() {
+    }
+
+    public function parseHTML() {
+
+        $dom = new Dom;
+        $dom->loadStr(file_get_contents(PTW_BASE_PATH . 'data.html'));
+        $tr = $dom->find('div[size=Letter] tbody tr')[1];
+        $shipTo = $tr->find('td')[1];
+        $billingAddress = explode("<br />", $shipTo->innerHtml);
+        // wp_console_log($billingAddress);
     }
 
 }
