@@ -51,22 +51,11 @@ class AjaxHooks {
     public function saveOptionsToDb() {
         $sanitizedData = $this->sanitizeData($_POST);
 
-        $ptwOptions = get_option('ptwOptions');
-
-        if ($ptwOptions) {
-            update_option('ptwOptions', $sanitizedData['organizedData']);
-            $this->output['response_type'] = esc_html('success');
-            $this->output['output'] = '<b>' . esc_html__('Data saved successfully', 'ptw') . '</b>';
-            echo json_encode($this->output);
-            wp_die();
-        } else {
-            add_option('ptwOptions', $sanitizedData['organizedData']);
-            $this->output['response_type'] = esc_html('success');
-            $this->output['output'] = '<b>' . esc_html__('Data saved successfully', 'ptw') . '</b>';
-            echo json_encode($this->output);
-            wp_die();
-        }
-
+        update_option('ptwOptions', $sanitizedData['organizedData']);
+        $this->output['response_type'] = esc_html('success');
+        $this->output['output'] = '<b>' . esc_html__('Data saved successfully', 'ptw') . '</b>';
+        echo json_encode($this->output);
+        wp_die();
     }
 
     public function deleteOptions() {

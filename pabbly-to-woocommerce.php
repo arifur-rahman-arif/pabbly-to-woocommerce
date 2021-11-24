@@ -65,7 +65,7 @@ final class PabblyToWoocommerce {
 
     public function initiatePlugin() {
         if (is_plugin_active(plugin_basename(__FILE__))) {
-            add_action('plugins_loaded', [$this, 'includeFiles']);
+            $this->includeFiles();
         }
     }
 
