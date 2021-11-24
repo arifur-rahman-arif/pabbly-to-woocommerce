@@ -23,7 +23,7 @@ $productID = get_option('ptw_wc_product_id') ? sanitize_text_field(get_option('p
             </strong>
             <br>
             <select style="min-width: 200px" name="ptw_wc_product_id" id="ptw_wc_product_id">
-                <?php echo getAdministratorsOptionHTML($productID) ?>
+                <?php echo getProductHTML($productID) ?>
             </select>
         </td>
 
