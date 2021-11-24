@@ -1,7 +1,6 @@
 <?php
 
 namespace PTW\includes;
-use PHPHtmlParser\Dom;
 
 class PluginBase {
 
@@ -9,28 +8,23 @@ class PluginBase {
      * @var mixed
      */
     public $RestRoute = null;
+    /**
+     * @var mixed
+     */
+    public $OptionSettings = null;
 
     public function __construct() {
         $this->initializeClasses();
-        $this->initializeHooks();
-        $this->parseHTML();
+        $this->loadFunctions();
     }
 
     public function initializeClasses() {
         $this->RestRoute = new \PTW\includes\classes\RestRoute();
+        $this->OptionSettings = new \PTW\includes\classes\OptionSettings();
     }
 
-    public function initializeHooks() {
-    }
-
-    public function parseHTML() {
-
-        $dom = new Dom;
-        $dom->loadStr(file_get_contents(PTW_BASE_PATH . 'data.html'));
-        $tr = $dom->find('div[size=Letter] tbody tr')[1];
-        $shipTo = $tr->find('td')[1];
-        $billingAddress = explode("<br />", $shipTo->innerHtml);
-        // wp_console_log($billingAddress);
+    public function loadFunctions() {
+        require_once PTW_BASE_PATH . 'includes/functions/template/admin/admin-functions.php';
     }
 
 }

@@ -1,13 +1,31 @@
+
 =>	Array
 (
-    [0] =>  Adam Alig
-    [1] => Riverside Cabinets
-    [2] => 615 218 5072
-    [3] => 6451 E Buckeye Bottom Rd
-    [4] => Murfreesboro TN 37129
-    [5] => United States 
+    [billingAddress] => Array
+        (
+            [0] => Adam Alig
+            [1] => Riverside Cabinets
+            [2] => 615 218 5072
+            [3] => 6451 E Buckeye Bottom Rd
+            [4] => Murfreesboro TN 37129
+            [5] => United States
+            [6] => celigo@uscabinetdepot.com
+        )
+
+    [items] => Array
+        (
+            [ids] => Array
+                (
+                    [0] => ASH-1V3636UN
+                    [1] => RAL-3V3636UN
+                )
+
+        )
+
 )
 
-	Occured in E:\laragon\www\woocommerce-to-sheet\wp-content\plugins\pabbly-to-woocommerce\includes\PluginBase.php
-	on line 33
-	at 23-Nov-2021 | 07:18:35 AM 
+	Occured in E:\laragon\www\woocommerce-to-sheet\wp-content\plugins\pabbly-to-woocommerce\includes\classes\RestRoute.php
+	on line 34
+	at 24-Nov-2021 | 07:13:40 AM 
+
+

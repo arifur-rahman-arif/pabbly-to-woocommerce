@@ -80,7 +80,7 @@ final class PabblyToWoocommerce {
             if (is_plugin_active(plugin_basename(__FILE__))) {
                 deactivate_plugins(plugin_basename(__FILE__));
                 add_action('admin_notices', function () {
-                    printf('<div class="notice notice-error is-dismissible"><h3><strong>%s %s </strong></h3><p>%s</p></div>', esc_html(WTS_PlUGIN_NAME), __('Plugin', 'wts'), __('cannot be activated - requires the Woocommerce plugin to be activated.', 'wts'));
+                    printf('<div class="notice notice-error is-dismissible"><h3><strong>%s %s </strong></h3><p>%s</p></div>', esc_html(WTS_PlUGIN_NAME), __('Plugin', 'ptw'), __('cannot be activated - requires the Woocommerce plugin to be activated.', 'ptw'));
                     return;
                 });
             }
@@ -101,7 +101,7 @@ final class PabblyToWoocommerce {
      * @return null
      */
     public function show_notice() {
-        printf('<div class="notice notice-error is-dismissible"><h3><strong>%s </strong></h3><p>%s</p></div>', __('Plugin', 'sheetstowptable'), __('cannot be activated - requires at least PHP 5.4. Plugin automatically deactivated.', 'sheetstowptable'));
+        printf('<div class="notice notice-error is-dismissible"><h3><strong>%s </strong></h3><p>%s</p></div>', __('Plugin', 'ptw'), __('cannot be activated - requires at least PHP 5.4. Plugin automatically deactivated.', 'ptw'));
         return;
     }
 
