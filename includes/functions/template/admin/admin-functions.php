@@ -51,7 +51,7 @@ function loadOptionsHTML() {
         <tr data-id="' . ($key + 1) . '">
             <td><input type="text" class="ptw_item_id" value="' . esc_attr($option['ptw_item_id']) . '" /></td>
             <td>
-                <select style="min-width: 200px" class="ptw_wc_product_id">
+                <select style="min-width: 300px" class="ptw_wc_product_id" id="product_select_box_' . ($key + 1) . '">
                     ' . getProductHTML($option['ptw_wc_product_id']) . '
                 </select>
             </td>

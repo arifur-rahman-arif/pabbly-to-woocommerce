@@ -12,6 +12,8 @@ var $ = jQuery.noConflict();
         saveData.click(saveOptionsData);
         deleteAll.click(deleteOptionData);
         $(document).on("click", ".delete_option", deleteOptionData);
+        $(document).on("click", ".remove_element", removeElement);
+        initializeSelectBox();
     }
 
     function duplicateRow(e) {
@@ -24,8 +26,20 @@ var $ = jQuery.noConflict();
         copyElement.removeClass("hidden_row");
         copyElement.attr("data-id", tableRows.length + 1);
         copyElement.find(".delete_option").attr("data-id", tableRows.length + 1);
+        copyElement
+            .find(".delete_option")
+            .removeClass("delete_option")
+            .addClass("remove_element")
+            .html("Remove");
+        copyElement
+            .find(".ptw_wc_product_id")
+            .attr("id", `product_select_box_${tableRows.length + 1}`);
 
         table.find("tbody").append(copyElement);
+
+        new SlimSelect({
+            select: `#product_select_box_${tableRows.length + 1}`,
+        });
     }
 
     function saveOptionsData(e) {
@@ -91,6 +105,15 @@ var $ = jQuery.noConflict();
 
         if (target.hasClass("ptw_delete_all")) deleteAction = "delete_all";
 
+        let confirmMessaage =
+            deleteAction == "delete_all"
+                ? "Are you sure you want to delete all data?"
+                : "Are you sure you want to delete this?";
+
+        if (!confirm(confirmMessaage)) {
+            return false;
+        }
+
         $.ajax({
             type: "POST",
             url: localizeData.ajaxURL,
@@ -111,7 +134,6 @@ var $ = jQuery.noConflict();
                         tableRows.hide();
                     } else {
                         target.parent().parent().hide();
-                        alert(response.output);
                     }
                 } else {
                     alert(response.output);
@@ -121,6 +143,26 @@ var $ = jQuery.noConflict();
             error: function (error) {
                 console.error(error);
             },
+        });
+    }
+
+    function removeElement(e) {
+        e.preventDefault();
+
+        let target = $(e.currentTarget);
+
+        target.parent().parent().hide().remove();
+    }
+
+    function initializeSelectBox() {
+        let select = $("tbody tr:not(.hidden_row) .ptw_wc_product_id");
+
+        if (select.length < 1) return;
+
+        $.each(select, function (i, element) {
+            new SlimSelect({
+                select: `#product_select_box_${i + 1}`,
+            });
         });
     }
 })();

@@ -8,7 +8,13 @@
 .table_container td,
 th {
     text-align: left;
+    width: 200px;
 }
+
+.table_container td button {
+    margin-left: 10px;
+}
+
 
 .action_btn {
     display: flex;

@@ -56,18 +56,21 @@ class RestRoute {
             ]
         ];
 
-        $data['billingAddress'][] = 'celigo@uscabinetdepot.com';
+        $data['billingAddress'][] = 'uscd@hypemill.com';
 
         $itemTable = $dom->find('div[size=Letter] table')[3]->find('tr');
 
         if ($itemTable) {
             foreach ($itemTable as $key => $itemRow) {
                 if (isset($itemRow->find('td')[1])) {
-                    $itemID = $itemRow->find('td')[1]->innerHTML;
                     $quantity = $itemRow->find('td')[0]->innerHTML;
+                    $itemID = $itemRow->find('td')[1]->innerHTML;
+                    $price = $itemRow->find('td')[3]->innerHTML;
+                    $price = floatval(preg_replace('/[^0-9^\.]/', '', $price));
                     array_push($data['items'], [
                         'id'       => trim($itemID),
-                        'quantity' => intval($quantity)
+                        'quantity' => intval($quantity),
+                        'price'    => $price
                     ]);
                 }
             }
@@ -119,8 +122,34 @@ class RestRoute {
         }
 
         $order->set_address($address, 'billing');
-        //
+
         $order->calculate_totals();
+
+        $order = wc_get_order($order->get_id()); // The WC_Order object instance
+
+        $i = 0;
+        foreach ($order->get_items() as $item_id => $item) {
+
+            $productPrice = $products[$i]['price'];
+
+            $quantity = (int) $item->get_quantity(); // product Quantity
+
+            // The new line item price
+            $newPrice = $productPrice * $quantity;
+
+            // Set the new price
+            $item->set_subtotal($newPrice);
+            $item->set_total($newPrice);
+
+            // Make new taxes calculations
+            $item->calculate_taxes();
+
+            $item->save(); // Save line item data
+            $i++;
+        }
+        // Make the calculations  for the order and SAVE
+        $order->calculate_totals();
+
         $order->update_status("completed", 'Imported order', TRUE);
     }
 
@@ -145,7 +174,8 @@ class RestRoute {
                 if (trim($option['ptw_item_id']) == trim($item['id'])) {
                     array_push($matchProductID, [
                         'productID' => $option['ptw_wc_product_id'],
-                        'quantity'  => $item['quantity']
+                        'quantity'  => $item['quantity'],
+                        'price'     => $item['price']
                     ]);
                 }
             }

@@ -10,11 +10,11 @@ class LoadAssets {
     public function loadAssets() {
         if (isset($_GET['page']) && $_GET['page'] === 'email-to-order') {
 
-            // wp_enqueue_style('ptw_admin', PTW_BASE_URL . 'assets/DataTables/datatables.min.css', [], PTW_VERSION, 'all');
+            wp_enqueue_style('ptw_select', PTW_BASE_URL . 'assets/slim-select/slimselect.min.css', [], PTW_VERSION, 'all');
 
             wp_enqueue_script('jquery');
-            // wp_enqueue_script('ptw_datatable', PTW_BASE_URL . 'assets/DataTables/datatables.min.js', ['jquery'], PTW_VERSION, true);
-            wp_enqueue_script('ptw_admin', PTW_BASE_URL . 'assets/admin/scripts/admin.js', ['jquery'], PTW_VERSION, true);
+            wp_enqueue_script('ptw_select', PTW_BASE_URL . 'assets/slim-select/slimselect.min.js', ['jquery'], PTW_VERSION, true);
+            wp_enqueue_script('ptw_admin', PTW_BASE_URL . 'assets/admin/scripts/admin.js', ['jquery', 'ptw_select'], PTW_VERSION, true);
             $this->localizeScripts();
         }
 
