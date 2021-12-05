@@ -125,7 +125,9 @@ class RestRoute {
 
         $order->calculate_totals();
 
-        $order = wc_get_order($order->get_id()); // The WC_Order object instance
+        $orderID = $order->get_id();
+
+        $order = wc_get_order($orderID); // The WC_Order object instance
 
         $i = 0;
         foreach ($order->get_items() as $item_id => $item) {
@@ -151,6 +153,10 @@ class RestRoute {
         $order->calculate_totals();
 
         $order->update_status("completed", 'Imported order', TRUE);
+
+        if ($orderID) {
+            do_action('ptw_custom_order_created', $orderID);
+        }
     }
 
     /**

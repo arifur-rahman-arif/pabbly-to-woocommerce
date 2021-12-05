@@ -18,8 +18,8 @@
 defined('ABSPATH') || wp_die(__('You can\'t access this page', 'wts'));
 
 if (!defined('PTW_VERSION')) {
-    // define('PTW_VERSION', '1.0.0');
-    define('PTW_VERSION', time());
+    define('PTW_VERSION', '1.0.0');
+    // define('PTW_VERSION', time());
 }
 
 if (!defined('PTW_BASE_PATH')) {
