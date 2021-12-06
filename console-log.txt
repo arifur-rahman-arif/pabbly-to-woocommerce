@@ -1,0 +1,74 @@
+=>	Array
+(
+    [0] => WP_Post Object
+        (
+            [ID] => 171
+            [post_author] => 1
+            [post_date] => 2021-12-06 13:23:33
+            [post_date_gmt] => 2021-12-06 13:23:33
+            [post_content] => 
+            [post_title] => RAL-3V3636UN
+            [post_excerpt] => Tapered Block Moulding Shiplap  Raleigh Unfinished Wood Hood 36Wx36H
+            [post_status] => publish
+            [comment_status] => open
+            [ping_status] => closed
+            [post_password] => 
+            [post_name] => ral-3v3636un
+            [to_ping] => 
+            [pinged] => 
+            [post_modified] => 2021-12-06 13:23:39
+            [post_modified_gmt] => 2021-12-06 13:23:39
+            [post_content_filtered] => 
+            [post_parent] => 0
+            [guid] => http://woocommerce-to-sheet.local.com/?post_type=product&#038;p=171
+            [menu_order] => 0
+            [post_type] => product
+            [post_mime_type] => 
+            [comment_count] => 0
+            [filter] => raw
+        )
+
+)
+
+	Occured in E:\laragon\www\woocommerce-to-sheet\wp-content\plugins\pabbly-to-woocommerce\includes\classes\RestRoute.php
+	on line 211
+	at 06-Dec-2021 | 02:21:46 PM 
+
+
+=>	Array
+(
+    [0] => WP_Post Object
+        (
+            [ID] => 131
+            [post_author] => 1
+            [post_date] => 2021-12-06 13:23:18
+            [post_date_gmt] => 2021-12-06 13:23:18
+            [post_content] => 
+            [post_title] => ASH-1V3636UN
+            [post_excerpt] => Curved Classic Moulding Smooth  Asheville Unfinished Wood Hood 36Wx36H
+            [post_status] => publish
+            [comment_status] => open
+            [ping_status] => closed
+            [post_password] => 
+            [post_name] => ash-1v3636un
+            [to_ping] => 
+            [pinged] => 
+            [post_modified] => 2021-12-06 13:23:21
+            [post_modified_gmt] => 2021-12-06 13:23:21
+            [post_content_filtered] => 
+            [post_parent] => 0
+            [guid] => http://woocommerce-to-sheet.local.com/?post_type=product&#038;p=131
+            [menu_order] => 0
+            [post_type] => product
+            [post_mime_type] => 
+            [comment_count] => 0
+            [filter] => raw
+        )
+
+)
+
+	Occured in E:\laragon\www\woocommerce-to-sheet\wp-content\plugins\pabbly-to-woocommerce\includes\classes\RestRoute.php
+	on line 211
+	at 06-Dec-2021 | 02:21:46 PM 
+
+

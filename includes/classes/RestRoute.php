@@ -29,9 +29,25 @@ class RestRoute {
 
         $requestBody = $request->get_body();
 
-        $organizedData = $this->parseData($requestBody);
+        $requestBody = json_decode($requestBody);
 
-        $this->createOrder($organizedData);
+        $organizedData = $this->parseData($requestBody->payload);
+        $header = $requestBody->orderID;
+
+        preg_match('/#\w+/i', $header, $orderID);
+
+        if (!is_array($orderID) || !$orderID[0]) {
+            return;
+        }
+
+        $orderID = $orderID[0];
+
+        $orderID = preg_replace('/#/i', '', $orderID);
+
+        $this->createOrder([
+            'organizedData' => $organizedData,
+            'orderID'       => $orderID
+        ]);
 
         return json_encode([
             'status'   => 200,
@@ -84,22 +100,29 @@ class RestRoute {
      */
     public function createOrder($data) {
 
-        $products = $this->findProductID($data);
+        $products = [];
+
+        $products = $this->findProductBySkU($data['organizedData']);
+
+        if (!is_array($products) || count($products) < 1) {
+            $products = $this->findProductID($data['organizedData']);
+        }
 
         if (!is_array($products) || count($products) < 1) {
             return;
         }
 
-        $firstName = isset($data['billingAddress']) ? explode(" ", $data['billingAddress'][0])[0] : '';
-        $lastName = isset($data['billingAddress']) ? explode(" ", $data['billingAddress'][0])[1] : '';
-        $company = isset($data['billingAddress']) ? $data['billingAddress'][1] : '';
-        $email = isset($data['billingAddress']) ? $data['billingAddress'][6] : '';
-        $phone = isset($data['billingAddress']) ? $data['billingAddress'][2] : '';
-        $address_1 = isset($data['billingAddress']) ? $data['billingAddress'][3] : '';
-        $city = isset($data['billingAddress']) ? explode(" ", $data['billingAddress'][4])[0] : '';
-        $state = isset($data['billingAddress']) ? explode(" ", $data['billingAddress'][4])[1] : '';
-        $postcode = isset($data['billingAddress']) ? explode(" ", $data['billingAddress'][4])[2] : '';
-        $country = isset($data['billingAddress']) ? $data['billingAddress'][5] : '';
+        $firstName = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][0])[0] : '';
+        $lastName = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][0])[1] : '';
+        $company = isset($data['organizedData']['billingAddress']) ? $data['organizedData']['billingAddress'][1] : '';
+        $email = isset($data['organizedData']['billingAddress']) ? $data['organizedData']['billingAddress'][6] : '';
+        $phone = isset($data['organizedData']['billingAddress']) ? $data['organizedData']['billingAddress'][2] : '';
+        $address_1 = isset($data['organizedData']['billingAddress']) ? $data['organizedData']['billingAddress'][3] : '';
+        $city = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[0] : '';
+        $state = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[1] : '';
+        $postcode = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[2] : '';
+        $country = isset($data['organizedData']['billingAddress']) ? $data['organizedData']['billingAddress'][5] : '';
+        $importedOrderID = $data['orderID'];
 
         $address = array(
             'first_name' => $firstName,
@@ -121,7 +144,8 @@ class RestRoute {
             $order->add_product(wc_get_product($product['productID']), intval($product['quantity']));
         }
 
-        $order->set_address($address, 'billing');
+        // $order->set_address($address, 'billing');
+        $order->set_address($address, 'shipping');
 
         $order->calculate_totals();
 
@@ -152,11 +176,54 @@ class RestRoute {
         // Make the calculations  for the order and SAVE
         $order->calculate_totals();
 
-        $order->update_status("completed", 'Imported order', TRUE);
+        $order->update_status("processing", 'Imported order', true);
+
+        update_post_meta($orderID, 'custom_pabbly_order', $importedOrderID);
 
         if ($orderID) {
             do_action('ptw_custom_order_created', $orderID);
         }
+    }
+
+    /**
+     * @param $data
+     */
+    public function findProductBySkU($data) {
+
+        if (count($data['items']) < 1) {
+            return [];
+        }
+
+        $items = $data['items'];
+
+        $matchProductID = [];
+
+        foreach ($items as $key => $item) {
+            $args = [
+                'post_type'      => 'product',
+                'posts_per_page' => -1,
+                'post_status'    => 'publish',
+                's'              => $item['id']
+            ];
+
+            $posts = get_posts($args);
+
+            if ($posts) {
+                foreach ($posts as $key => $post) {
+
+                    $product = wc_get_product($post->ID);
+
+                    array_push($matchProductID, [
+                        'productID' => $post->ID,
+                        'quantity'  => $item['quantity'],
+                        'price'     => $product->get_price()
+                    ]);
+                }
+            }
+
+        }
+
+        return $matchProductID;
     }
 
     /**

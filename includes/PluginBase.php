@@ -21,6 +21,10 @@ class PluginBase {
      * @var mixed
      */
     public $AjaxHooks = null;
+    /**
+     * @var mixed
+     */
+    public $Hooks = null;
 
     public function __construct() {
         $this->initializeClasses();
@@ -32,6 +36,7 @@ class PluginBase {
         $this->OptionSettings = new \PTW\includes\classes\OptionSettings();
         $this->LoadAssets = new \PTW\includes\classes\LoadAssets();
         $this->AjaxHooks = new \PTW\includes\classes\AjaxHooks();
+        $this->Hooks = new \PTW\includes\classes\Hooks();
     }
 
     public function loadFunctions() {
