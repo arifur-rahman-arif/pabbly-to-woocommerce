@@ -124,7 +124,7 @@ class RestRoute {
         $country = isset($data['organizedData']['billingAddress']) ? $data['organizedData']['billingAddress'][5] : '';
         $importedOrderID = $data['orderID'];
 
-        $address = array(
+        $address = [
             'first_name' => $firstName,
             'last_name'  => $lastName,
             'company'    => $company,
@@ -135,7 +135,7 @@ class RestRoute {
             'state'      => $state,
             'postcode'   => $postcode,
             'country'    => $country
-        );
+        ];
 
         // Now we create the order
         $order = wc_create_order();
@@ -144,7 +144,21 @@ class RestRoute {
             $order->add_product(wc_get_product($product['productID']), intval($product['quantity']));
         }
 
-        // $order->set_address($address, 'billing');
+        $order->set_address(
+            [
+                'first_name' => "Brother's Global, Inc",
+                // 'last_name'  => $lastName,
+                // 'company'    => $company,
+                'email'      => 'cs@uscd.com',
+                // 'phone'      => $phone,
+                'address_1'  => '2065 Baker Way',
+                'city'       => 'KENNESAW',
+                'state'      => 'GA',
+                'postcode'   => '30144',
+                'country'    => 'USA'
+            ],
+            'billing'
+        );
         $order->set_address($address, 'shipping');
 
         $order->calculate_totals();
