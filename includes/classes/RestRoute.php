@@ -121,7 +121,7 @@ class RestRoute {
         $city = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[0] : '';
         $state = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[1] : '';
         $postcode = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[2] : '';
-        $country = isset($data['organizedData']['billingAddress']) ? $data['organizedData']['billingAddress'][5] : '';
+        $country = 'USA';
         $importedOrderID = $data['orderID'];
 
         $address = [
