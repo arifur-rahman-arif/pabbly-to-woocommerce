@@ -230,7 +230,7 @@ class RestRoute {
                     array_push($matchProductID, [
                         'productID' => $post->ID,
                         'quantity'  => $item['quantity'],
-                        'price'     => $product->get_price()
+                        'price'     => $item['price']
                     ]);
                 }
             }
