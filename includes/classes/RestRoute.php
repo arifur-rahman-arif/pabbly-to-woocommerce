@@ -34,19 +34,19 @@ class RestRoute {
         $organizedData = $this->parseData($requestBody->payload);
         $header = $requestBody->orderID;
 
-        preg_match('/#\w+/i', $header, $orderID);
+        preg_match('/#\w+/i', $header, $orderPO);
 
-        if (!is_array($orderID) || !$orderID[0]) {
+        if (!is_array($orderPO) || !$orderPO[0]) {
             return;
         }
 
-        $orderID = $orderID[0];
+        $orderPO = $orderPO[0];
 
-        $orderID = preg_replace('/#/i', '', $orderID);
+        $orderPO = preg_replace('/#/i', '', $orderPO);
 
         $this->createOrder([
             'organizedData' => $organizedData,
-            'orderID'       => $orderID
+            'orderPO'       => $orderPO
         ]);
 
         return json_encode([
@@ -92,6 +92,20 @@ class RestRoute {
             }
         }
 
+        $orderHTML = $dom->find('div[size=Letter] table')[2]->find('tr')[1]->find('td')[1]->innerHTML;
+
+        preg_match('/#\w+/i', $orderHTML, $orderNumber);
+
+        if (!is_array($orderNumber) || !$orderNumber[0]) {
+            return;
+        }
+
+        $orderNumber = $orderNumber[0];
+
+        $orderNumber = preg_replace('/#/i', '', $orderNumber);
+
+        $data['orderNumber'] = $orderNumber;
+
         return $data;
     }
 
@@ -122,13 +136,14 @@ class RestRoute {
         $state = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[1] : '';
         $postcode = isset($data['organizedData']['billingAddress']) ? explode(" ", $data['organizedData']['billingAddress'][4])[2] : '';
         $country = 'USA';
-        $importedOrderID = $data['orderID'];
+        $importedOrderPO = $data['orderPO'];
+        $orderNumber = $data['organizedData']['orderNumber'];
 
         $address = [
             'first_name' => $firstName,
             'last_name'  => $lastName,
             'company'    => $company,
-            'email'      => $email,
+            // 'email'      => $email,
             'phone'      => $phone,
             'address_1'  => $address_1,
             'city'       => $city,
@@ -149,7 +164,7 @@ class RestRoute {
                 'first_name' => "Brother's Global, Inc",
                 // 'last_name'  => $lastName,
                 // 'company'    => $company,
-                'email'      => 'cs@uscd.com',
+                'email'      => 'dev.ar.arif@gmail.com',
                 // 'phone'      => $phone,
                 'address_1'  => '2065 Baker Way',
                 'city'       => 'KENNESAW',
@@ -192,7 +207,8 @@ class RestRoute {
 
         $order->update_status("processing", 'Imported order', true);
 
-        update_post_meta($orderID, 'custom_pabbly_order', $importedOrderID);
+        update_post_meta($orderID, 'custom_pabbly_order', $importedOrderPO);
+        update_post_meta($orderID, 'custom_pabbly_order_number', $orderNumber);
 
         if ($orderID) {
             do_action('ptw_custom_order_created', $orderID);

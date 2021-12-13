@@ -13,7 +13,7 @@ class Hooks {
      */
     public function modifyPabblyOrderNumber($orderID) {
 
-        $importedID = get_post_meta($orderID, 'custom_pabbly_order', true);
+        $importedID = get_post_meta($orderID, 'custom_pabbly_order_number', true);
 
         if (!is_array($importedID)) {
             return $orderID . ' ' . $importedID;
