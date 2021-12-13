@@ -114,6 +114,10 @@ class RestRoute {
      */
     public function createOrder($data) {
 
+        if (!$data || !is_array($data)) {
+            return;
+        }
+
         $products = [];
 
         $products = $this->findProductBySkU($data['organizedData']);
