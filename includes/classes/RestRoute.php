@@ -17,8 +17,9 @@ class RestRoute {
     public function registerRoute() {
         // {site-url}/wp-json/pabbly-to-woocommerce/v1/create-order
         register_rest_route('pabbly-to-woocommerce/v1', 'create-order', array(
-            'methods'  => \WP_REST_Server::EDITABLE,
-            'callback' => [$this, 'initRequest']
+            'methods'             => \WP_REST_Server::EDITABLE,
+            'callback'            => [$this, 'initRequest'],
+            'permission_callback' => function () {return '';},
         ), true);
     }
 
